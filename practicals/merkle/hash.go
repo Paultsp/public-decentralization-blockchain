@@ -1,6 +1,7 @@
 package main
 
 import (
+	"crypto/sha256"
 	"encoding/base64"
 )
 
@@ -31,7 +32,9 @@ var (
 // sha256.Sum256, which takes a slice and returns an array of 32 bytes that
 // you can turn back into a slice with sum[:].
 func HashLeaf(leaf []byte) []byte {
-	return nil // TODO: hash the leaf, with its prefix (section 4)
+	sum := sha256.Sum256(append(LeafPrefix, leaf...))
+	return sum[:]
+	// return nil // TODO: hash the leaf, with its prefix (section 4)
 }
 
 // HashInternal returns the digest of an internal node of the tree, from the
@@ -39,7 +42,9 @@ func HashLeaf(leaf []byte) []byte {
 //
 // [Task] Return sha256(NodePrefix || left || right).
 func HashInternal(left, right []byte) []byte {
-	return nil // TODO: hash the two children, with the node prefix (section 4)
+	sum := sha256.Sum256(append(append(NodePrefix, left...), right...))
+	return sum[:]
+	//return nil // TODO: hash the two children, with the node prefix (section 4)
 }
 
 // b64 renders a digest the way the reference implementation does, so that

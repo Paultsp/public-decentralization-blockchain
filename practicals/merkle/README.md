@@ -57,6 +57,8 @@ input — if we agree on the digest, we agree on the data.
 two different values with the same digest, at will. Describe concretely what
 you could do to Alice's wallet.
 
+-> fake la transaction
+
 ## 2. Getting started [15']
 
 Install Go (>= 1.21) following the official instructions:

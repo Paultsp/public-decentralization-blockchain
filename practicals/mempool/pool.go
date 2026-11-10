@@ -80,6 +80,13 @@ func (p *Pool) Contains(key TxKey) bool {
 func (p *Pool) Insert(tx Tx) error {
 	p.mu.Lock()
 	defer p.mu.Unlock()
+	if p.Contains(tx.Key()) {
+		return ErrTxInPool
+	}
+	if !p.app.IsValid(tx) {
+		return ErrInvalidTx
+	}
+	p.fifo.PushBack(tx)
 	return nil // TODO: dedup with the map, p.app.IsValid, then store in the list and the map (section 6)
 }
 

@@ -48,7 +48,20 @@ func NewBank(genesis map[string]uint64) *Bank {
 //
 // [Task] Implement it.
 func apply(state map[string]uint64, tx Tx) bool {
-	return false // TODO: decode the transfer, check it, then move the amount (section 5)
+	msg, err := DecodeTransfer(tx)
+	if err != nil {
+		return false
+	}
+	if msg.Amount <= 0 {
+		return false
+	}
+	if state[msg.From] < msg.Amount {
+		return false
+	}
+
+	state[msg.From] -= msg.Amount
+	state[msg.To] += msg.Amount
+	return true // TODO: decode the transfer, check it, then move the amount (section 5)
 }
 
 // IsValid validates tx against the check state, and applies it there.
